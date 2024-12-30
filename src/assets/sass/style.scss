@@ -1,0 +1,18 @@
+// 해당 파일은 scss를 보다 편리하게 관리하기 위해 한 번에 묶어두는 곳입니다!
+// index.js에서 이 파일만 import 하시면 돼요! 
+
+@charset "UTF-8";
+
+// setting
+@import "setting/vars";
+@import "setting/resets";
+@import "setting/common";
+
+// section 
+// section 폴더 아래 자신이 작업하는 components scss를 생성합니다.
+// _(이름).scss 입니다. 
+
+@import "section/section";
+
+//components
+@import "components/login";
