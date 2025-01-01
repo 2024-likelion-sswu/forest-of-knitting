@@ -1,19 +1,12 @@
 //main의 section
 .Header_wrap {
     position: fixed;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 500px;
-    height: 56px;
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    padding-left: 20px;
+    right: 20px;
+    top:20px;
 
     img {
-        width: 91px;
+        width: 24px;
+        height: 24px;
     }
 }
 
@@ -21,15 +14,35 @@
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
-    bottom: 0;
-    width: 100%;
-    max-width: 500px;
+    bottom: 20px;
+    width: 180px;
     height: 60px;
-    padding: 0 68px;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-
+    justify-content: center;
+    background-color: #D8D8D880;
+    border-radius: 30px;
+    .nav-btn{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #F1F1F1;
+        margin: 5px 2.5px;
+        .archive-btn{
+            width: 22px;
+            height: 20px;
+        }
+        .home-btn{
+            width: 23px;
+            height: 20.5px;
+        }
+        .like-btn{
+            width: 24px;
+            height: 24px;
+        }
+    }
     
 }
 

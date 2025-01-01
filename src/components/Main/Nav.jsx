@@ -7,9 +7,13 @@ import Like from '../../assets/img/Main/like.svg'
 const Nav = () => {
     return (
         <div className='Nav_wrap'>
-            <Link to='/Archive'><img src={Archive} alt="Archive" /></Link>
-            <Link to='/'><img src={Home} alt="Home" /></Link>
-            <Link to='/Like'><img src={Like} alt="Like" /></Link>
+            <Link to='/Archive'>
+                <div className='nav-btn'>
+                    <img src={Archive} alt="Archive" className='archive-btn'/>
+                </div>
+            </Link>
+            <Link to='/'><div className='nav-btn'><img src={Home} alt="Home" className='home-btn'/></div></Link>
+            <Link to='/Like'><div className='nav-btn'><img src={Like} alt="Like" className='like-btn'/></div></Link>
         </div>
     )
 }
