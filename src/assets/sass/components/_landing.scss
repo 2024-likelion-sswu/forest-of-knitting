@@ -1,0 +1,11 @@
+.landing{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2rem;
+    img{
+        height: 8rem;
+        object-fit: contain;
+    }
+}
