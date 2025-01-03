@@ -28,7 +28,7 @@ const KnitTime = () => {
 
   //timer 페이지로 이동
   const toTimer = () => {
-    navigate('/timerstart');
+    navigate('/knittime/timerstart');
   };
   // 슬라이드 데이터 배열
   const completeData = [

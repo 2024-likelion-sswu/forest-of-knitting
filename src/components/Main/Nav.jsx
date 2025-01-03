@@ -12,11 +12,11 @@ const Nav = () => {
 
   return (
     <div className='Nav_wrap'>
-      <Link to='/Archive' className={location.pathname === '/Archive' ? 'active' : ''}>
+      <Link to='/gallery' className={location.pathname === '/gallery' ? 'active' : ''}>
         <img
           src={Galary}
           alt="Archive"
-          className={`default ${location.pathname === '/Archive' ? 'none' : ''}`}
+          className={`default ${location.pathname === '/gallery' ? 'none' : ''}`}
         />
         <img src={Galary_A} alt="Archive Active" className="active" />
       </Link>
@@ -28,11 +28,12 @@ const Nav = () => {
         />
         <img src={Home_A} alt="Home Active" className="active" />
       </Link>
-      <Link to='/knittime' className={location.pathname === '/Like' ? 'active' : ''}>
+      {/* 수정된 조건 */}
+      <Link to='/knittime' className={location.pathname.startsWith('/knittime') ? 'active' : ''}>
         <img
           src={Time}
           alt="Like"
-          className={`default ${location.pathname === '/Like' ? 'none' : ''}`}
+          className={`default ${location.pathname.startsWith('/knittime') ? 'none' : ''}`}
         />
         <img src={Time_A} alt="Like Active" className="active" />
       </Link>
