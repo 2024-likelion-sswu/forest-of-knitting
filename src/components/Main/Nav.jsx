@@ -13,14 +13,14 @@ const Nav = ({name}) => {
   return (
     <div className='Nav_wrap'>
 
-      <Link to='/Archive' className={name === 'Archive' ? 'active' : ''}>
+      <Link to='/gallery' className={name === 'Gallery' ? 'active' : ''}>
         <img
           src={Galary}
-          alt="Archive"
-          className={`default ${name === 'Archive' ? 'none' : ''}`}
+          alt="Gallery"
+          className={`default ${name === 'Gallery' ? 'none' : ''}`}
 
         />
-        <img src={Galary_A} alt="Archive Active" className="active" />
+        <img src={Galary_A} alt="Gallery Active" className="active" />
       </Link>
       <Link to='/main' className={name === 'Main' ? 'active' : ''}>
         <img
@@ -31,7 +31,7 @@ const Nav = ({name}) => {
         <img src={Home_A} alt="Home Active" className="active" />
       </Link>
 
-      <Link to='/Like' className={name === 'knittime' ? 'active' : ''}>
+      <Link to='/knittime' className={name === 'knittime' ? 'active' : ''}>
         <img
           src={Time}
           alt="Like"

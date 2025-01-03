@@ -32,7 +32,7 @@ const TimerStart = () => {
   return (
     <div className='TimerStart_wrap container'>
         <Header />
-        <Nav />
+        <Nav name={'knittime'}/>
         <h1 className='timer-h1'>뜨개하는 중...</h1>
         <section className='timer'>
             <Timer/>

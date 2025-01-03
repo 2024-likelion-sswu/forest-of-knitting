@@ -60,7 +60,7 @@ const Gallery = () => {
   return (
     <div className="gallery_wrap container">
       <Header />
-      <Nav />
+      <Nav name={'Gallery'}/>
       <section className="today-design">
         <h1>오늘의 도안</h1>
         <div className="content">
