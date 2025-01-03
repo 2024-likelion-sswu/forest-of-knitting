@@ -1,5 +1,6 @@
 .KnitTime_wrap {
   position: relative;
+  
 
   .swiper-container {
     width: 390px;
@@ -9,33 +10,39 @@
     box-shadow: 0px -1px 4px -2px #00000040 inset;
     padding: 20px;
     overflow: hidden;
-  .swiper-scrollbar {
-  background: #D9D9D9 ;/* 기본 바 배경색 */
-  height: 5px; /* 바 높이 */
-  width: 90%;
-  border-radius: 4px;
-  position: absolute;
-  bottom:10px;
-  left: 5%;
-  }
 
-  .swiper-scrollbar-drag {
-  background: #FFFFFF; /* 드래그 바 색상 */
-  border-radius: 4px;
-  }
+    .swiper-scrollbar {
+      background: #D9D9D9;
+      /* 기본 바 배경색 */
+      height: 5px;
+      /* 바 높이 */
+      width: 90%;
+      border-radius: 4px;
+      position: absolute;
+      bottom: 10px;
+      left: 5%;
+    }
+
+    .swiper-scrollbar-drag {
+      background: #FFFFFF;
+      /* 드래그 바 색상 */
+      border-radius: 4px;
+    }
+
     .swiper-slide {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       position: relative;
-      width: 100%; 
-        max-width: 120px;
+      width: 100%;
+      max-width: 120px;
 
       img {
         width: 121px;
         height: auto;
-        border-radius: 8px; /* 이미지 모서리 둥글게 */
+        border-radius: 8px;
+        /* 이미지 모서리 둥글게 */
       }
 
       h1 {
@@ -48,6 +55,7 @@
       }
     }
   }
+
   .complete_pattern {
     position: absolute;
     top: 70px;
@@ -73,6 +81,7 @@
     }
 
   }
+
   .saved_pattern {
     position: absolute;
     top: 350px;
@@ -98,8 +107,9 @@
     }
 
   }
-   .to-knitting{
-    position: fixed;
+
+  .to-knitting {
+  
     bottom: 105px;
     left: 50%;
     transform: translateX(-50%);
@@ -117,26 +127,31 @@
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
 
-   }
+  }
 }
-.DesignTime_wrap{
+
+.DesignTime_wrap {
   height: 140vh;
-  .timer-design{
+
+  .timer-design {
     display: flex;
     flex-direction: column;
     align-items: center;
-    .design-img{
+
+    .design-img {
       width: 300px;
       height: 300px;
       overflow: hidden;
     }
-    .design-h2{
+
+    .design-h2 {
       padding: 0 5px;
       margin-top: 10px;
       width: 300px;
       display: flex;
       justify-content: space-between;
-      h2{
+
+      h2 {
         font-family: Pretendard;
         font-size: 13px;
         font-weight: 400;
@@ -145,12 +160,13 @@
         text-align: left;
         text-underline-position: from-font;
         text-decoration-skip-ink: none;
-  
+
       }
     }
 
   }
-  .timer-h1{
+
+  .timer-h1 {
     font-family: Pretendard;
     font-size: 20px;
     font-weight: 700;
@@ -161,7 +177,8 @@
     text-decoration-skip-ink: none;
     padding-top: 70px;
   }
-  .design-h1{
+
+  .design-h1 {
     font-family: Pretendard;
     font-size: 20px;
     font-weight: 700;
@@ -173,7 +190,8 @@
     padding-top: 70px;
     padding-bottom: 15px;
   }
-  .timer{
+
+  .timer {
     margin: 0 auto;
     margin-top: 30px;
     width: 300px;
@@ -182,13 +200,15 @@
     background: #F7F7F7;
     border-radius: 15px;
   }
-  .playlist{
+
+  .playlist {
     width: 311px;
     height: 250px;
     margin: 0 auto;
     padding-top: 40px;
     position: relative;
-    h1{
+
+    h1 {
       font-family: Pretendard;
       font-size: 20px;
       font-weight: 700;
@@ -196,21 +216,25 @@
       letter-spacing: -0.03em;
       text-align: left;
       text-underline-position: from-font;
-      text-decoration-skip-ink: none;      
+      text-decoration-skip-ink: none;
     }
-    .img-icon{
+
+    .img-icon {
       width: 24px;
       height: 24px;
       position: absolute;
-      top:65px;
+      top: 65px;
       right: 0px;
     }
-    .swiper-container{
+
+    .swiper-container {
       overflow: hidden;
       height: 270px;
+
       /* 페이지네이션 기본 스타일 */
       .swiper-pagination {
-        bottom: 10px; /* 페이지네이션 위치 */
+        bottom: 10px;
+        /* 페이지네이션 위치 */
         text-align: center;
       }
 
@@ -227,7 +251,8 @@
 
       /* 현재 활성화된 점 스타일 */
       .swiper-pagination-bullet-active {
-        background: #ffffff; /* 활성화된 점의 색상 */
+        background: #ffffff;
+        /* 활성화된 점의 색상 */
         opacity: 1;
         border: 1px solid #000000;
         width: 8px;
@@ -236,19 +261,23 @@
 
       /* 점 간격 조정 */
       .swiper-pagination-bullets {
-        gap: 8px; /* 점 사이의 간격 */
+        gap: 8px;
+        /* 점 사이의 간격 */
       }
+
       .swiper-pagination-bullet:nth-child(n+4) {
         display: none;
       }
-      .com-contents{
-        img{
+
+      .com-contents {
+        img {
           width: 311px;
           height: 176px;
           border-radius: 16px;
           margin-top: 15px;
         }
-        h1{
+
+        h1 {
           margin-top: 15px;
           font-family: Pretendard;
           font-size: 10px;
@@ -264,9 +293,10 @@
     }
   }
 }
-.TimerStart_wrap{
 
-  .timer-h1{
+.TimerStart_wrap {
+
+  .timer-h1 {
     font-family: Pretendard;
     font-size: 20px;
     font-weight: 700;
@@ -278,7 +308,7 @@
     padding-top: 70px;
   }
 
-  .timer{
+  .timer {
     margin: 0 auto;
     margin-top: 30px;
     width: 300px;
@@ -287,13 +317,15 @@
     background: #F7F7F7;
     border-radius: 15px;
   }
-  .playlist{
+
+  .playlist {
     width: 311px;
     height: 250px;
     margin: 0 auto;
     padding-top: 40px;
     position: relative;
-    h1{
+
+    h1 {
       font-family: Pretendard;
       font-size: 20px;
       font-weight: 700;
@@ -301,21 +333,25 @@
       letter-spacing: -0.03em;
       text-align: left;
       text-underline-position: from-font;
-      text-decoration-skip-ink: none;      
+      text-decoration-skip-ink: none;
     }
-    .img-icon{
+
+    .img-icon {
       width: 24px;
       height: 24px;
       position: absolute;
-      top:65px;
+      top: 65px;
       right: 0px;
     }
-    .swiper-container{
+
+    .swiper-container {
       overflow: hidden;
       height: 270px;
+
       /* 페이지네이션 기본 스타일 */
       .swiper-pagination {
-        bottom: 10px; /* 페이지네이션 위치 */
+        bottom: 10px;
+        /* 페이지네이션 위치 */
         text-align: center;
       }
 
@@ -332,7 +368,8 @@
 
       /* 현재 활성화된 점 스타일 */
       .swiper-pagination-bullet-active {
-        background: #ffffff; /* 활성화된 점의 색상 */
+        background: #ffffff;
+        /* 활성화된 점의 색상 */
         opacity: 1;
         border: 1px solid #000000;
         width: 8px;
@@ -341,19 +378,23 @@
 
       /* 점 간격 조정 */
       .swiper-pagination-bullets {
-        gap: 8px; /* 점 사이의 간격 */
+        gap: 8px;
+        /* 점 사이의 간격 */
       }
+
       .swiper-pagination-bullet:nth-child(n+4) {
         display: none;
       }
-      .com-contents{
-        img{
+
+      .com-contents {
+        img {
           width: 311px;
           height: 176px;
           border-radius: 16px;
           margin-top: 15px;
         }
-        h1{
+
+        h1 {
           margin-top: 15px;
           font-family: Pretendard;
           font-size: 10px;
@@ -370,13 +411,14 @@
   }
 }
 
-.timer-wrapper{
+.timer-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  .popup-text-bk{
+
+  .popup-text-bk {
     position: absolute;
-    top:0;
+    top: 0;
     left: 0;
     width: 100%;
     height: 140vh;
@@ -385,7 +427,8 @@
     z-index: 2001;
 
   }
-  .popup-text{
+
+  .popup-text {
     position: fixed;
     top: 30%;
     font-family: Pretendard;
@@ -401,16 +444,17 @@
     border-radius: 20px;
     box-shadow: 0px 4px 4px 0px #00000040;
     z-index: 2002;
-    color:#000000;
+    color: #000000;
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  .popup{
-    .content{
+
+  .popup {
+    .content {
       background-color: var(--white);
       position: absolute;
-      top:240px;
+      top: 240px;
       left: 50%;
       transform: translateX(-50%);
       width: 290px;
@@ -427,12 +471,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color:#000000;
+      color: #000000;
     }
-    .dtimer-content{
+
+    .dtimer-content {
       background-color: var(--white);
       position: absolute;
-      top:240px;
+      top: 240px;
       left: 50%;
       transform: translateX(-50%);
       width: 290px;
@@ -450,15 +495,17 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color:#000000;
+      color: #000000;
     }
-    .dtimer-btn{
+
+    .dtimer-btn {
       display: flex;
       align-items: center;
       justify-content: space-between;
       width: 150px;
       margin-top: 20px;
-      button{
+
+      button {
         font-family: Pretendard;
         font-size: 20px;
         font-weight: 700;
@@ -469,14 +516,15 @@
         text-underline-position: from-font;
         text-decoration-skip-ink: auto;
       }
-      button:hover{
+
+      button:hover {
         font-size: 24px;
       }
     }
-    
-    .popup-bk{
+
+    .popup-bk {
       position: absolute;
-      top:0;
+      top: 0;
       left: 0;
       width: 100%;
       height: 100%;
@@ -486,18 +534,20 @@
     }
   }
 
-  .timer-display{
+  .timer-display {
     font-size: 64px;
     font-weight: bold;
     color: #B5ABA4;
     margin-top: 20px;
     margin-bottom: 10px;
   }
-  .timer-buttons{
+
+  .timer-buttons {
     width: 200px;
     display: flex;
     justify-content: space-around;
-    button{
+
+    button {
       width: 80px;
       height: 50px;
       background-color: #606060;
@@ -513,13 +563,16 @@
       text-decoration-skip-ink: none;
       cursor: pointer;
     }
+
     .startTimer:hover {
       background-color: #519452
     }
-    .stopTimer:hover{
+
+    .stopTimer:hover {
       background-color: #DD6A6A;
     }
-    button:active{
+
+    button:active {
       background-color: #ccc;
     }
   }
