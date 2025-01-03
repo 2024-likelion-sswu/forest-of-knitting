@@ -7,33 +7,36 @@ import Home_A from '../../assets/img/Nav/Home_active.png';
 import Galary_A from '../../assets/img/Nav/Galary_active.png';
 import Time_A from '../../assets/img/Nav/Time_active.png';
 
-const Nav = () => {
-  const location = useLocation();
+const Nav = ({name}) => {
+
 
   return (
     <div className='Nav_wrap'>
-      <Link to='/gallery' className={location.pathname === '/gallery' ? 'active' : ''}>
+
+      <Link to='/Archive' className={name === 'Archive' ? 'active' : ''}>
         <img
           src={Galary}
           alt="Archive"
-          className={`default ${location.pathname === '/gallery' ? 'none' : ''}`}
+          className={`default ${name === 'Archive' ? 'none' : ''}`}
+
         />
         <img src={Galary_A} alt="Archive Active" className="active" />
       </Link>
-      <Link to='/main' className={location.pathname === '/main' ? 'active' : ''}>
+      <Link to='/main' className={name === 'Main' ? 'active' : ''}>
         <img
           src={Home}
           alt="Home"
-          className={`default ${location.pathname === '/main' ? 'none' : ''}`}
+          className={`default ${name === 'Main' ? 'none' : ''}`}
         />
         <img src={Home_A} alt="Home Active" className="active" />
       </Link>
-      {/* 수정된 조건 */}
-      <Link to='/knittime' className={location.pathname.startsWith('/knittime') ? 'active' : ''}>
+
+      <Link to='/Like' className={name === 'knittime' ? 'active' : ''}>
         <img
           src={Time}
           alt="Like"
-          className={`default ${location.pathname.startsWith('/knittime') ? 'none' : ''}`}
+          className={`default ${name === 'knittime' ? 'none' : ''}`}
+
         />
         <img src={Time_A} alt="Like Active" className="active" />
       </Link>
