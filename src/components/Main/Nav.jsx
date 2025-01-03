@@ -7,32 +7,32 @@ import Home_A from '../../assets/img/Nav/Home_active.png';
 import Galary_A from '../../assets/img/Nav/Galary_active.png';
 import Time_A from '../../assets/img/Nav/Time_active.png';
 
-const Nav = () => {
-  const location = useLocation();
+const Nav = ({name}) => {
+
 
   return (
     <div className='Nav_wrap'>
-      <Link to='/Archive' className={location.pathname === '/Archive' ? 'active' : ''}>
+      <Link to='/Archive' className={name === 'Archive' ? 'active' : ''}>
         <img
           src={Galary}
           alt="Archive"
-          className={`default ${location.pathname === '/Archive' ? 'none' : ''}`}
+          className={`default ${name === 'Archive' ? 'none' : ''}`}
         />
         <img src={Galary_A} alt="Archive Active" className="active" />
       </Link>
-      <Link to='/main' className={location.pathname === '/main' ? 'active' : ''}>
+      <Link to='/main' className={name === 'Main' ? 'active' : ''}>
         <img
           src={Home}
           alt="Home"
-          className={`default ${location.pathname === '/main' ? 'none' : ''}`}
+          className={`default ${name === 'Main' ? 'none' : ''}`}
         />
         <img src={Home_A} alt="Home Active" className="active" />
       </Link>
-      <Link to='/Like' className={location.pathname === '/Like' ? 'active' : ''}>
+      <Link to='/Like' className={name === 'Like' ? 'active' : ''}>
         <img
           src={Time}
           alt="Like"
-          className={`default ${location.pathname === '/Like' ? 'none' : ''}`}
+          className={`default ${name === 'Like' ? 'none' : ''}`}
         />
         <img src={Time_A} alt="Like Active" className="active" />
       </Link>

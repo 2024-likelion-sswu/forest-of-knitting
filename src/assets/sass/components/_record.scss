@@ -1,0 +1,169 @@
+.Record_wrap {
+    .wrap {
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        margin-top: -3rem;
+
+        .title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #321805;
+            margin-bottom: 2rem;
+        }
+
+        .paper {
+            background-image: url('../../img/Main/paper.png');
+            background-size: cover;
+            min-height: 50rem;
+            height: auto;
+            width: 35rem;
+            border-radius: 2rem;
+            padding: 2rem;
+            border: .5px #32180588 solid;
+            display: flex;
+
+            align-items: center;
+            flex-direction: column;
+
+            .input_title {
+                border-bottom: 1px #321805 solid;
+                width: 14rem;
+
+                input {
+                    text-align: center;
+                    width: inherit;
+                    font-weight: bold;
+                    background: none;
+                    color: #321805;
+                    font-size: 1.6rem;
+                    margin-bottom: .5rem;
+
+                }
+            }
+
+            .save_time {
+                margin-top: 2rem;
+                display: flex;
+                height: fit-content;
+                width: 100%;
+                color: #321805;
+                justify-content: space-around;
+                align-items: center;
+
+                h2 {
+                    font-size: 1.8rem;
+                    font-weight: bolder;
+                }
+
+                .time {
+                    display: flex;
+                    width: 19rem;
+                    height: 6.5rem;
+                    border-radius: 1.5rem;
+                    background-color: #f7f7f7;
+                    justify-content: space-evenly;
+                    font-size: 3.2rem;
+                    align-items: center;
+                    font-weight: bold;
+
+                    input {
+                        font-size: 3.2rem;
+                        width: 6rem;
+                        background: none;
+                        text-align: center;
+                        font-weight: bold;
+
+                    }
+                }
+
+            }
+
+            .images {
+                display: flex;
+                width: inherit;
+                margin-top: 2rem;
+
+                >div {
+                    width: 50%;
+                    display: flex;
+                    justify-content: baseline;
+                    align-items: center;
+                    flex-direction: column;
+
+                    p {
+                        font-size: 1.6rem;
+                        font-weight: bold;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: .5rem;
+                        margin-bottom: 1rem;
+                    }
+
+                    .image_picker {
+                        display: flex;
+                        flex-direction: column;
+
+                        img {
+                            width: 15rem;
+                        }
+
+                        input {
+                            display: none;
+                        }
+                    }
+                }
+
+            }
+
+            .defficulty {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 1rem;
+                margin-top: 2rem;
+
+                p {
+                    font-size: 2rem;
+                    font-weight: bold;
+                }
+
+                .stars {
+                    display: flex;
+
+                }
+            }
+
+
+        }
+
+        .share {
+            width: 100vw;
+            >div {
+                display: flex;
+                align-self: flex-end;
+                justify-content: end;
+                gap: 1rem;
+                padding: 1rem 2rem;
+            }
+
+            p {
+                width: fit-content;
+                font-size: 1.6rem;
+                font-weight: bold;
+            }
+
+            img {
+                width: 4rem;
+                display: flex;
+            }
+
+        }
+
+    }
+    .btn{
+        margin-bottom: 10rem;
+    }
+}
