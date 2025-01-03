@@ -28,7 +28,7 @@ const Nav = () => {
         />
         <img src={Home_A} alt="Home Active" className="active" />
       </Link>
-      <Link to='/Like' className={location.pathname === '/Like' ? 'active' : ''}>
+      <Link to='/knittime' className={location.pathname === '/Like' ? 'active' : ''}>
         <img
           src={Time}
           alt="Like"
