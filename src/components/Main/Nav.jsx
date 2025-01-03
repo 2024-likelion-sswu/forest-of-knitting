@@ -12,11 +12,13 @@ const Nav = ({name}) => {
 
   return (
     <div className='Nav_wrap'>
+
       <Link to='/Archive' className={name === 'Archive' ? 'active' : ''}>
         <img
           src={Galary}
           alt="Archive"
           className={`default ${name === 'Archive' ? 'none' : ''}`}
+
         />
         <img src={Galary_A} alt="Archive Active" className="active" />
       </Link>
@@ -28,11 +30,13 @@ const Nav = ({name}) => {
         />
         <img src={Home_A} alt="Home Active" className="active" />
       </Link>
-      <Link to='/Like' className={name === 'Like' ? 'active' : ''}>
+
+      <Link to='/Like' className={name === 'knittime' ? 'active' : ''}>
         <img
           src={Time}
           alt="Like"
-          className={`default ${name === 'Like' ? 'none' : ''}`}
+          className={`default ${name === 'knittime' ? 'none' : ''}`}
+
         />
         <img src={Time_A} alt="Like Active" className="active" />
       </Link>

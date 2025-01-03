@@ -5,6 +5,7 @@ import Cloud from '../../assets/img/KnitTime/cloud.svg';
 import Checked from '../../assets/img/KnitTime/checked.svg';
 import ExampleImg from '../../assets/img/KnitTime/example-img.png';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { useNavigate } from 'react-router-dom';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -23,6 +24,12 @@ const SlideContent = ({ image, time }) => {
 };
 
 const KnitTime = () => {
+  const navigate = useNavigate();
+
+  //timer 페이지로 이동
+  const toTimer = () => {
+    navigate('/knittime/timerstart');
+  };
   // 슬라이드 데이터 배열
   const completeData = [
     { image: ExampleImg, time: '4시간 34분' },
@@ -90,7 +97,7 @@ const KnitTime = () => {
           ))}
         </Swiper>
       </section>
-      <button className='to-knitting'>뜨개하기</button>
+      <button className='to-knitting' onClick={toTimer}>뜨개하기</button>
     </div>
   );
 };
