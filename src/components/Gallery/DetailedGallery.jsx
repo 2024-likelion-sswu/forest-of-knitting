@@ -37,7 +37,7 @@ const DetailedGallery = () => {
   return (
     <div className="DetailedGallery-wrap container">
       <Header />
-      <Nav />
+      <Nav name={'Gallery'}/>
       <img src={Bk} alt="bk" className="detail-bk" />
       <div className="detail-container">
         <Swiper        pagination={{ clickable: true }} modules={[Pagination]}>

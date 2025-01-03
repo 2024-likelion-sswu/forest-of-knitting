@@ -50,7 +50,7 @@ const KnitTime = () => {
   return (
     <div className="KnitTime_wrap container">
       <Header />
-      <Nav />
+      <Nav name={'knittime'}/>
       <section className="complete_pattern">
         <div className="my_complete">
           <img src={Cloud} alt="cloud-icon" />

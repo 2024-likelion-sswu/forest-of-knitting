@@ -34,7 +34,7 @@ const DesignTime = () => {
   return (
     <div className='DesignTime_wrap container'>
         <Header />
-        <Nav />
+        <Nav name={'knittime'}/>
         <h1 className='design-h1'>뜨개하는 중...</h1>
         <div className='timer-design'>
             <div className='design-img'>

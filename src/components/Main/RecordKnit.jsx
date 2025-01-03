@@ -81,7 +81,7 @@ const RecordKnit = () => {
                                     type="file"
                                     accept="image/*"
                                     onChange={(e) => handleImageChange(e, setDesignImage)}
-                                    style={{ display: 'none' }} // input은 숨김 처리
+                                    style={{ display: 'none' }} 
                                 />
                             </div>
                         </div>
@@ -94,7 +94,7 @@ const RecordKnit = () => {
                                     type="file"
                                     accept="image/*"
                                     onChange={(e) => handleImageChange(e, setCompleteImage)}
-                                    style={{ display: 'none' }} // input은 숨김 처리
+                                    style={{ display: 'none' }}
                                 />
                             </div>
                         </div>
@@ -114,7 +114,7 @@ const RecordKnit = () => {
                         </div>
                     </div>
                 </div>
-                <div className="share">
+                <div className="show_control">
                     <div className="d">
                         <p>공개 여부</p>
                         {share ? <img src={SwithOn} onClick={handleShare} /> : <img src={SwithOff} onClick={handleShare} />}
