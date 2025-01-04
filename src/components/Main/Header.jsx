@@ -51,7 +51,7 @@ const Header = () => {
                         onClick={toggleMenu}
                     >
                         <motion.div
-                            className="wrap"
+                            className="headmotion-wrap"
                             initial="hidden"
                             animate="visible"
                             exit="exit"

@@ -1,6 +1,6 @@
 .KnitTime_wrap {
   position: relative;
-  min-height: 100vh;
+  min-height: 844px;
 
   .swiper-container {
     width: 390px;
@@ -132,7 +132,7 @@
 
 .DesignTime_wrap {
   height: 140vh;
-
+  min-height: 844px;
   .timer-design {
     display: flex;
     flex-direction: column;
@@ -295,7 +295,7 @@
 }
 
 .TimerStart_wrap {
-
+  min-height: 844px;
   .timer-h1 {
     font-family: Pretendard;
     font-size: 20px;
