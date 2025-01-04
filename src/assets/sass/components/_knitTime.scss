@@ -1,6 +1,6 @@
 .KnitTime_wrap {
   position: relative;
-  
+  min-height: 100vh;
 
   .swiper-container {
     width: 390px;
@@ -109,8 +109,8 @@
   }
 
   .to-knitting {
-    position:fixed;
-    bottom: 105px;
+    position:absolute;
+    top: 655px;
     left: 50%;
     transform: translateX(-50%);
     width: 198px;
