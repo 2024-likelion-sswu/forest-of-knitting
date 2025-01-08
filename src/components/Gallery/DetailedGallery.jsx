@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Header from '../Main/Header';
 import Nav from '../Main/Nav';
 import Example from '../../assets/img/Gallery/example-img.png';
@@ -9,6 +9,7 @@ import Bookmark from '../../assets/img/Gallery/bookmark.svg';
 import BookmarkFilled from '../../assets/img/Gallery/bookmark_filled.svg';
 import Bk from '../../assets/img/Gallery/gallery-bk.png';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import axios from 'axios';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -16,6 +17,9 @@ import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
 
 const DetailedGallery = () => {
+  const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  const jwtToken = localStorage.getItem('jwtToken');
+  const recordId = localStorage.getItem('detailedGalleryID');
   const [galleryContent, setGalleryContent] = useState({
     title: '마루킁킁뜨개했삼',
     time: '6시간 18분',
@@ -25,6 +29,40 @@ const DetailedGallery = () => {
     imgSrc: [Example, Example02], 
     owner: '뜨개구리를만들고싶은소녀',
   });
+
+  //get 상세 record
+  const getDetailGallery = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/record/detail`, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+          'Content-Type': 'application/json',
+        },
+        params: { recordId },
+      });
+  
+      if (response.status === 200) {
+        const responseContent = response.data.data;
+        setGalleryContent({
+          title: responseContent.knitRecord.title,
+          time: `${Math.floor(responseContent.knitRecord.time / 60)}시간 ${
+            responseContent.knitRecord.time % 60
+          }분`,
+          preference: responseContent.knitRecord.level,
+          likes: responseContent.knitRecord.recommendation,
+          bookmarks: true,
+          imgSrc: [responseContent.knitImgUrl, responseContent.designImgUrl],
+          owner: responseContent.knitRecord.user.nickname,
+        });
+      }
+    } catch (error) {
+      console.error("Failed to fetch gallery details:", error.message);
+    }
+  };
+  
+  useEffect(() => {
+    getDetailGallery ();
+  }, []);
 
   // 북마크 상태를 토글하는 함수
   const toggleBookmark = () => {
@@ -40,7 +78,7 @@ const DetailedGallery = () => {
       <Nav name={'Gallery'}/>
       <img src={Bk} alt="bk" className="detail-bk" />
       <div className="detail-container">
-        <Swiper        pagination={{ clickable: true }} modules={[Pagination]}>
+        <Swiper        pagination={{ clickable: true }} modules={[Pagination]} spaceBetween={10}>
           {galleryContent.imgSrc.map((img, index) => (
             <SwiperSlide key={index} className='swiper-content'>
               <img src={img} alt={`top-img-${index}`} className="top-img" />

@@ -9,7 +9,6 @@ import RecordKnit from './components/Main/RecordKnit'
 import TimerStart from './components/Knit-time/TimerStart'
 import Gallery from './components/Gallery/Gallery'
 import DetailedGallery from './components/Gallery/DetailedGallery'
-import ChangeGallery from './components/Gallery/ChangeGallery'
 import DesignTime from './components/Knit-time/DesignTime'
 
 
@@ -27,7 +26,6 @@ const App = () => {
                 <Route path='/knittime/designtime' element={<DesignTime/>} />
                 <Route path='/gallery' element={<Gallery/>} />
                 <Route path='/gallery/detailedgallery' element={<DetailedGallery/>} />
-                <Route path='/gallery/changegallery' element={<ChangeGallery/>} />
             </Routes>
         </BrowserRouter>
     )

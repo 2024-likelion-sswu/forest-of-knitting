@@ -16,7 +16,7 @@ const Login = () => {
       })
       .then((response) => {
         if (response.status === 200) {
-          localStorage.setItem('jwtToken',  response.data);
+          localStorage.setItem('jwtToken',  response.data.data);
           navigate('/main')
 
         }

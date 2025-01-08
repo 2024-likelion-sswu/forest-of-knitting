@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../Main/Header';
 import Nav from '../Main/Nav';
 import Cloud from '../../assets/img/KnitTime/cloud.svg';
 import Checked from '../../assets/img/KnitTime/checked.svg';
-import ExampleImg from '../../assets/img/KnitTime/example-img.png';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -25,32 +25,77 @@ const SlideContent = ({ image, time }) => {
 
 const KnitTime = () => {
   const navigate = useNavigate();
+  const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  const jwtToken = localStorage.getItem('jwtToken');
 
-  //timer 페이지로 이동
+  // State for complete and saved designs
+  const [completeData, setCompleteData] = useState([]);
+  const [savedData, setSavedData] = useState([]);
+
+  // Format time from minutes to "X시간 Y분"
+  const formatTime = (minutes) => {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours}시간 ${mins}분`;
+  };
+
+  // Fetch completed designs
+  const completeGet = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/designknit/completed`, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.status === 200) {
+        const formattedData = response.data.map((item) => ({
+          image: item.imgUrl,
+          time: formatTime(item.time),
+        }));
+        setCompleteData(formattedData);
+      }
+    } catch (error) {
+      console.error('Error fetching completed designs:', error.message);
+    }
+  };
+
+  // Fetch saved designs
+  const savedGet = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/designknit/saved`, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.status === 200) {
+        const formattedData = response.data.map((item) => ({
+          image: item.imgUrl,
+          time: formatTime(item.time),
+        }));
+        setSavedData(formattedData);
+      }
+    } catch (error) {
+      console.error('Error fetching saved designs:', error.message);
+    }
+  };
+
+  // Navigate to timer page
   const toTimer = () => {
     navigate('/knittime/timerstart');
   };
-  // 슬라이드 데이터 배열
-  const completeData = [
-    { image: ExampleImg, time: '4시간 34분' },
-    { image: ExampleImg, time: '2시간 18분' },
-    { image: ExampleImg, time: '3시간 45분' },
-    { image: ExampleImg, time: '5시간 12분' },
-    { image: ExampleImg, time: '6시간 30분' },
-  ];
 
-  const savedData = [
-    { image: ExampleImg, time: '2시간 34분' },
-    { image: ExampleImg, time: '3시간 18분' },
-    { image: ExampleImg, time: '4시간 45분' },
-    { image: ExampleImg, time: '5시간 12분' },
-    { image: ExampleImg, time: '2시간 30분' },
-  ];
+  // Fetch data on component mount
+  useEffect(() => {
+    completeGet();
+    savedGet();
+  }, []);
 
   return (
     <div className="KnitTime_wrap container">
       <Header />
-      <Nav name={'knittime'}/>
+      <Nav name="knittime" />
       <section className="complete_pattern">
         <div className="my_complete">
           <img src={Cloud} alt="cloud-icon" />
@@ -97,7 +142,9 @@ const KnitTime = () => {
           ))}
         </Swiper>
       </section>
-      <button className='to-knitting' onClick={toTimer}>뜨개하기</button>
+      <button className="to-knitting" onClick={toTimer}>
+        뜨개하기
+      </button>
     </div>
   );
 };
