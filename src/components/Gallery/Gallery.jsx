@@ -74,6 +74,7 @@ const Gallery = () => {
           title: item.title,
           time: item.time,
           preference: item.level,
+          bookmarks: item.isBooked,
           likes: item.recommendation,
           imgSrc: item.imgUrl || Example, // 기본 이미지 설정
         }));
@@ -90,30 +91,38 @@ const Gallery = () => {
     fetchGallery();
   }, [currentPage]); 
 
-//저장된 디자인 업데이트
+// 저장된 디자인 업데이트
 const updateSavedDesign = async (id, time = 0, isCompleted = false) => {
   console.log(id, time, isCompleted);
   try {
+    const formData = new FormData();
+    formData.append('knitRecordId', id?.toString() || '');
+    formData.append('hour', Math.floor(time / 60)?.toString() || '');
+    formData.append('minute', (time % 60)?.toString() || '');
+    formData.append('isCompleted', isCompleted ? 'true' : 'false');
+
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
     const response = await fetch(`${BASE_URL}/designknit/update`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${jwtToken}`,
-        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwtToken}`, 
       },
-      body: JSON.stringify({
-        knitRecordId: id,
-        time: time, // 시간 값을 인자로 받아 설정
-        isCompleted: isCompleted, // 완료 여부도 인자로 받아 설정
-      }),
+      body: formData,
     });
 
     if (!response.ok) {
       console.error('Failed to update saved design');
+    } else {
+      console.log('Design updated successfully');
     }
   } catch (error) {
     console.error('Error updating saved design: ', error);
   }
 };
+
 
 
 

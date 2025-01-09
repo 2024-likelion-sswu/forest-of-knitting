@@ -50,7 +50,7 @@ const DetailedGallery = () => {
           }분`,
           preference: responseContent.knitRecord.level,
           likes: responseContent.knitRecord.recommendation,
-          bookmarks: true,
+          bookmarks: responseContent.isBooked,
           imgSrc: [responseContent.knitImgUrl, responseContent.designImgUrl],
           owner: responseContent.knitRecord.user.nickname,
         });

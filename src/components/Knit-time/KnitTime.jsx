@@ -14,9 +14,17 @@ import 'swiper/css/scrollbar';
 import { Scrollbar } from 'swiper/modules';
 
 // SlideContent 컴포넌트 생성
-const SlideContent = ({ image, time }) => {
+const SlideContent = ({ image, time, knitRecordId }) => {
+  const navigate = useNavigate();
+  // 이미지 클릭 시 knitRecordId를 localStorage에 저장
+  const handleClick = () => {
+    localStorage.setItem('detailedGalleryID', knitRecordId);
+    console.log(`Knit Record ID ${knitRecordId} saved to localStorage.`);
+    navigate('/knittime/designtime');
+  };
+
   return (
-    <div className="com-contents">
+    <div className="com-contents" onClick={handleClick}>
       <img src={image} alt="example-img" />
       <h1>{time}</h1>
     </div>
@@ -32,11 +40,9 @@ const KnitTime = () => {
   const [completeData, setCompleteData] = useState([]);
   const [savedData, setSavedData] = useState([]);
 
-  // Format time from minutes to "X시간 Y분"
-  const formatTime = (minutes) => {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return `${hours}시간 ${mins}분`;
+  // Format time from hour and minute to "X시간 Y분"
+  const formatTime = (hour, minute) => {
+    return `${hour}시간 ${minute}분`;
   };
 
   // Fetch completed designs
@@ -50,8 +56,9 @@ const KnitTime = () => {
       });
       if (response.status === 200) {
         const formattedData = response.data.map((item) => ({
+          knitRecordId: item.knitRecordId,
           image: item.imgUrl,
-          time: formatTime(item.time),
+          time: formatTime(item.hour, item.minute),
         }));
         setCompleteData(formattedData);
       }
@@ -71,8 +78,9 @@ const KnitTime = () => {
       });
       if (response.status === 200) {
         const formattedData = response.data.map((item) => ({
+          knitRecordId: item.knitRecordId,
           image: item.imgUrl,
-          time: formatTime(item.time),
+          time: formatTime(item.hour, item.minute),
         }));
         setSavedData(formattedData);
       }
@@ -92,6 +100,8 @@ const KnitTime = () => {
     savedGet();
   }, []);
 
+  
+
   return (
     <div className="KnitTime_wrap container">
       <Header />
@@ -106,15 +116,19 @@ const KnitTime = () => {
           slidesPerView={2}
           spaceBetween={20}
           scrollbar={{
-            hide: false, // 스크롤 바 항상 보이게
-            draggable: true, // 드래그 가능
+            hide: false,
+            draggable: true,
           }}
           modules={[Scrollbar]}
           className="swiper-container"
         >
           {completeData.map((slide, index) => (
             <SwiperSlide key={index}>
-              <SlideContent image={slide.image} time={slide.time} />
+              <SlideContent
+                image={slide.image}
+                time={slide.time}
+                knitRecordId={slide.knitRecordId}
+              />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -129,15 +143,19 @@ const KnitTime = () => {
           slidesPerView={2}
           spaceBetween={20}
           scrollbar={{
-            hide: false, // 스크롤 바 항상 보이게
-            draggable: true, // 드래그 가능
+            hide: false,
+            draggable: true,
           }}
           modules={[Scrollbar]}
           className="swiper-container"
         >
           {savedData.map((slide, index) => (
             <SwiperSlide key={index}>
-              <SlideContent image={slide.image} time={slide.time} />
+              <SlideContent
+                image={slide.image}
+                time={slide.time}
+                knitRecordId={slide.knitRecordId}
+              />
             </SwiperSlide>
           ))}
         </Swiper>

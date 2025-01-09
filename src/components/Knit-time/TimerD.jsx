@@ -2,13 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const TimerD = () =>  {
+  const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  const jwtToken = localStorage.getItem('jwtToken');
+  const recordId = localStorage.getItem('detailedGalleryID');
       const navigate = useNavigate();
-  const [time, setTime] = useState(0); // 타이머 시간 (초 단위)
+  const [time, setTime] = useState(localStorage.getItem('DesignTime')); // 타이머 시간 (초 단위)
   const [isRunning, setIsRunning] = useState(false); // 타이머 상태
   const [save, setSave] = useState(false);
   const [buttonColor, setButtonColor] = useState('#B5ABA4'); 
   const [designWrite, setDesignWrite] = useState(false);
   const [popupClicked, setPopupclicked] = useState(false);
+  const isBooked = localStorage.getItem('isBooked');
 
   // 타이머 시작
   const startTimer = () => {
@@ -67,6 +71,38 @@ const TimerD = () =>  {
   const popupOut = () => {
     setSave(false);
   }
+
+    // 완료한 디자인 업데이트
+    const updateCompletedDesign = async (id, time, isCompleted = true) => {
+      console.log(id, time, isCompleted);
+      try {
+        const formData = new FormData();
+        formData.append('knitRecordId', id?.toString() || '');
+        formData.append('hour', Math.floor(time / 60)?.toString() || '');
+        formData.append('minute', (time % 60)?.toString() || '');
+        formData.append('isCompleted', isCompleted ? 'true' : 'false');
+  
+        for (const [key, value] of formData.entries()) {
+          console.log(`${key}: ${value}`);
+        }
+  
+        const response = await fetch(`${BASE_URL}/designknit/update`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${jwtToken}`, 
+          },
+          body: formData,
+        });
+  
+        if (!response.ok) {
+          console.error('Failed to update saved design');
+        } else {
+          console.log('Design updated successfully');
+        }
+      } catch (error) {
+        console.error('Error updating saved design: ', error);
+      }
+    };
 
   return (
     <div className="timer-wrapper">
