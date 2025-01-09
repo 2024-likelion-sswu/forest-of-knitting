@@ -38,7 +38,7 @@ const Signup = () => {
     const gotoMain = () => {
         if (isPasswordMatch && nickname && password && userId ) {
             axios
-                .post('http://13.209.30.143:8080/user/signup', {
+                .post('https://sutest.store/user/signup', {
                     userId: userId,
                     nickname: nickname,
                     password: password,
@@ -59,7 +59,7 @@ const Signup = () => {
 
     const checkDuplicate = () => {
         axios
-            .get('http://13.209.30.143:8080/user/isDuplicate', {
+            .get('https://sutest.store/user/isDuplicate', {
                 params: { userId },
             })
             .then((response) => {

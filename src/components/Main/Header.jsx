@@ -10,6 +10,7 @@ const Header = () => {
     const handleLogout = () => {
         const confirmLogout = window.confirm('로그아웃 하겠습니까?');
         if (confirmLogout) {
+            localStorage.removeItem('jwtToken');
             navigate('/');
         }
     };
