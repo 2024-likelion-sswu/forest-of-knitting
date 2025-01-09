@@ -13,14 +13,16 @@ import 'swiper/css/scrollbar';
 // Import required modules
 import { Scrollbar } from 'swiper/modules';
 
-// SlideContent 컴포넌트 생성
-const SlideContent = ({ image, time, knitRecordId }) => {
+const SlideContent = ({ image, time, knitRecordId, isCompleted }) => {
   const navigate = useNavigate();
-  // 이미지 클릭 시 knitRecordId를 localStorage에 저장
   const handleClick = () => {
     localStorage.setItem('detailedGalleryID', knitRecordId);
     console.log(`Knit Record ID ${knitRecordId} saved to localStorage.`);
-    navigate('/knittime/designtime');
+    if (isCompleted) {
+      navigate('/gallery/detailedgallery');  // 완료된 도안은 /gallery/detailedgallery로
+    } else {
+      navigate('/knittime/designtime');  // 저장한 도안은 /knittime/designtime으로
+    }
   };
 
   return (
@@ -31,21 +33,18 @@ const SlideContent = ({ image, time, knitRecordId }) => {
   );
 };
 
+
 const KnitTime = () => {
   const navigate = useNavigate();
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const jwtToken = localStorage.getItem('jwtToken');
 
-  // State for complete and saved designs
   const [completeData, setCompleteData] = useState([]);
   const [savedData, setSavedData] = useState([]);
+  const [refreshData, setRefreshData] = useState(false); // 추가된 상태
 
-  // Format time from hour and minute to "X시간 Y분"
-  const formatTime = (hour, minute) => {
-    return `${hour}시간 ${minute}분`;
-  };
+  const formatTime = (hour, minute) => `${hour}시간 ${minute}분`;
 
-  // Fetch completed designs
   const completeGet = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/designknit/completed`, {
@@ -67,7 +66,6 @@ const KnitTime = () => {
     }
   };
 
-  // Fetch saved designs
   const savedGet = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/designknit/saved`, {
@@ -81,26 +79,34 @@ const KnitTime = () => {
           knitRecordId: item.knitRecordId,
           image: item.imgUrl,
           time: formatTime(item.hour, item.minute),
+          isCompleted: item.isCompleted,
         }));
         setSavedData(formattedData);
+        console.log(formattedData);
       }
     } catch (error) {
       console.error('Error fetching saved designs:', error.message);
     }
   };
 
-  // Navigate to timer page
   const toTimer = () => {
+    setRefreshData(true); // 데이터 새로 고침을 트리거
     navigate('/knittime/timerstart');
   };
 
-  // Fetch data on component mount
+  // 데이터 갱신 로직
+  useEffect(() => {
+    if (refreshData) {
+      completeGet();
+      savedGet();
+      setRefreshData(false); // 데이터 갱신 후 초기화
+    }
+  }, [refreshData]); // 의존성 배열에 `refreshData` 추가
+
   useEffect(() => {
     completeGet();
     savedGet();
   }, []);
-
-  
 
   return (
     <div className="KnitTime_wrap container">
@@ -111,14 +117,10 @@ const KnitTime = () => {
           <img src={Cloud} alt="cloud-icon" />
           <h1>내가 완성한 도안</h1>
         </div>
-
         <Swiper
           slidesPerView={2}
           spaceBetween={20}
-          scrollbar={{
-            hide: false,
-            draggable: true,
-          }}
+          scrollbar={{ hide: false, draggable: true }}
           modules={[Scrollbar]}
           className="swiper-container"
         >
@@ -128,6 +130,7 @@ const KnitTime = () => {
                 image={slide.image}
                 time={slide.time}
                 knitRecordId={slide.knitRecordId}
+                isCompleted={true}
               />
             </SwiperSlide>
           ))}
@@ -138,14 +141,10 @@ const KnitTime = () => {
           <img src={Checked} alt="cloud-icon" />
           <h1>저장한 도안</h1>
         </div>
-
         <Swiper
           slidesPerView={2}
           spaceBetween={20}
-          scrollbar={{
-            hide: false,
-            draggable: true,
-          }}
+          scrollbar={{ hide: false, draggable: true }}
           modules={[Scrollbar]}
           className="swiper-container"
         >
@@ -155,6 +154,7 @@ const KnitTime = () => {
                 image={slide.image}
                 time={slide.time}
                 knitRecordId={slide.knitRecordId}
+                isCompleted={false}
               />
             </SwiperSlide>
           ))}

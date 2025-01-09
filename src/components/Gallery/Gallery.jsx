@@ -11,49 +11,29 @@ import Bk from '../../assets/img/Gallery/gallery-bk.png';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const initialGalleryContents = [
   {
+    id: 1,
     title: '마루킁킁뜨개했삼',
     time: '6시간 18분',
     preference: 4,
     likes: 150,
     bookmarks: true,
     imgSrc: Example,
+    starClicked: false, // Add individual starClicked state for each content
   },
-  {
-    title: '새로운 뜨개 작품',
-    time: '4시간 12분',
-    preference: 5,
-    likes: 200,
-    bookmarks: false,
-    imgSrc: Example,
-  },
-  {
-    title: '여름 니트 가디건',
-    time: '8시간 45분',
-    preference: 3,
-    likes: 75,
-    bookmarks: true,
-    imgSrc: Example,
-  },
-  {
-    title: '겨울 머플러 뜨개질',
-    time: '3시간 30분',
-    preference: 4,
-    likes: 120,
-    bookmarks: false,
-    imgSrc: Example,
-  },
-  // 추가 콘텐츠
 ];
 
 const Gallery = () => {
   const navigate = useNavigate();
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const jwtToken = localStorage.getItem('jwtToken');
-  const [galleryContents, setGalleryContents] = useState(initialGalleryContents);
+  const [galleryContents, setGalleryContents] = useState([]);
   const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 상태
+  const [isPageDataLoaded, setIsPageDataLoaded] = useState(false);
+  
 
   // record 전체글 조회
   const fetchGallery = async () => {
@@ -77,80 +57,144 @@ const Gallery = () => {
           bookmarks: item.isBooked,
           likes: item.recommendation,
           imgSrc: item.imgUrl || Example, // 기본 이미지 설정
+          starClicked: false, 
         }));
-        setGalleryContents(formattedData);
+
+        // 데이터가 정상적으로 로드된 경우
+        if (formattedData.length > 0) {
+          setGalleryContents((prevContents) => [...prevContents, ...formattedData]);
+          setIsPageDataLoaded(true); // 데이터가 로드됨
+        } else {
+          setIsPageDataLoaded(false); // 데이터가 없으면 로드 실패
+        }
       } else {
         console.error('Failed to fetch gallery contents');
       }
     } catch (error) {
       console.error('Error fetching gallery contents:', error);
+      setIsPageDataLoaded(false); // 데이터 로드 실패
     }
   };
 
   useEffect(() => {
     fetchGallery();
-  }, [currentPage]); 
+  }, [currentPage]);
 
-// 저장된 디자인 업데이트
-const updateSavedDesign = async (id, time = 0, isCompleted = false) => {
-  console.log(id, time, isCompleted);
-  try {
-    const formData = new FormData();
-    formData.append('knitRecordId', id?.toString() || '');
-    formData.append('hour', Math.floor(time / 60)?.toString() || '');
-    formData.append('minute', (time % 60)?.toString() || '');
-    formData.append('isCompleted', isCompleted ? 'true' : 'false');
+  // 저장된 디자인 업데이트
+  const updateSavedDesign = async (id, time = 0, isCompleted = false) => {
+    try {
+      const formData = new FormData();
+      formData.append('knitRecordId', id?.toString() || '');
+      formData.append('hour', Math.floor(time / 60)?.toString() || '');
+      formData.append('minute', (time % 60)?.toString() || '');
+      formData.append('isCompleted', isCompleted ? 'true' : 'false');
 
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
+      const response = await fetch(`${BASE_URL}/designknit/update`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${jwtToken}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        console.error('Failed to update saved design');
+      } else {
+        console.log('Design updated successfully');
+      }
+    } catch (error) {
+      console.error('Error updating saved design: ', error);
     }
+  };
 
-    const response = await fetch(`${BASE_URL}/designknit/update`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${jwtToken}`, 
-      },
-      body: formData,
-    });
+  // 북마크 취소
+  const cancelBookmark = async (id) => {
+    try {
+      const response = await axios.delete(`${BASE_URL}/designknit/cancel/${parseInt(id)}`, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
-    if (!response.ok) {
-      console.error('Failed to update saved design');
-    } else {
-      console.log('Design updated successfully');
+      if (response.status === 200) {
+        console.log('Response:', response.data.message);
+      } else {
+        console.error('디자인 취소 실패');
+      }
+    } catch (error) {
+      console.error('디자인 취소 중 에러 발생:', error);
     }
-  } catch (error) {
-    console.error('Error updating saved design: ', error);
-  }
-};
-
-
-
+  };
 
   const toggleBookmark = (index) => {
     const updatedContents = [...galleryContents];
     updatedContents[index].bookmarks = !updatedContents[index].bookmarks;
-    if(updatedContents[index].bookmarks){ //새로 북마크 할때
-      
-      const time = 0; 
-      const isCompleted = false; 
-      //console.log(updatedContents[index].id, time, isCompleted);
-      updateSavedDesign(updatedContents[index].id, time, isCompleted); 
+    if (updatedContents[index].bookmarks) {
+      const time = 0;
+      const isCompleted = false;
+      updateSavedDesign(updatedContents[index].id, time, isCompleted);
+    } else {
+      cancelBookmark(updatedContents[index].id);
     }
     setGalleryContents(updatedContents);
-
   };
 
   //상세보기로 이동
   const toDetailedGallery = (id) => {
     localStorage.setItem('detailedGalleryID', id);  // 클릭한 id를 저장
-
     navigate('/gallery/detailedgallery');
-  }
+  };
 
+  const handleReachEnd = () => {
+    // 이전 페이지가 로드된 경우에만 다음 페이지를 불러옴
+    if (isPageDataLoaded) {
+      setCurrentPage((prevPage) => prevPage + 1); // 마지막 슬라이드에 도달하면 페이지 증가
+    }
+  };
+  
+  const clickStar = async (index) => {
+    const updatedContents = [...galleryContents];
+    const currentContent = updatedContents[index];
+  
+    // 클릭 상태를 반전시킴
+    currentContent.starClicked = !currentContent.starClicked;
+  
+    // 만약 클릭 상태가 false일 때만 추천 API를 호출
+    if (!currentContent.starClicked) {
+      try {
+        // FormData 객체 생성
+        const formData = new FormData();
+        formData.append('recordId', currentContent.id);  // recordId를 FormData에 추가
+  
+        const response = await axios.post(`${BASE_URL}/record/recommend`, formData, {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            'Content-Type': 'multipart/form-data',  // multipart/form-data 설정
+          },
+        });
+  
+        if (response.status === 200) {
+          console.log('Star recommendation sent successfully');
+          // 추천 수를 증가시킴
+          currentContent.likes += 1; // 추천 수를 증가시킨다
+        } else {
+          console.error('Failed to send recommendation');
+        }
+      } catch (error) {
+        console.error('Error sending recommendation:', error);
+      }
+    }
+  
+    setGalleryContents(updatedContents); // 변경된 내용 갱신
+  };
+  
+  
   return (
     <div className="gallery_wrap container">
       <Header />
       <Nav name={'Gallery'} />
+      {galleryContents.length > 0 && galleryContents[0].imgSrc && (
       <section className="today-design">
         <h1>오늘의 도안</h1>
         <div className="content">
@@ -161,7 +205,12 @@ const updateSavedDesign = async (id, time = 0, isCompleted = false) => {
           </div>
           <div className="mark">
             <div className="mark-content">
-              <img src={Star} alt="star" className="star-img" />
+              <img
+                src={galleryContents[0].starClicked ? StarFilled : Star}
+                alt="star"
+                className="star-img"
+                onClick={() => clickStar(0)} // Add index to toggle star for the clicked item
+              />
               <span>{galleryContents[0].likes}</span>
               <img
                 src={galleryContents[0].bookmarks ? BookmarkFilled : Bookmark}
@@ -177,6 +226,7 @@ const updateSavedDesign = async (id, time = 0, isCompleted = false) => {
           </div>
         </div>
       </section>
+      )}
       <section className="design-gallery">
         <div className="gal-bk"><img src={Bk} alt="bk" /></div>
         <h1>도안 갤러리</h1>
@@ -185,12 +235,16 @@ const updateSavedDesign = async (id, time = 0, isCompleted = false) => {
             direction={'vertical'}
             spaceBetween={10}
             slidesPerView={3.5}
+            onReachEnd={handleReachEnd} // 마지막 슬라이드 도달 시 페이지 증가
           >
             {galleryContents.map((content, index) => (
               <SwiperSlide key={index}>
                 <div className="content">
-                  <img src={content.imgSrc} alt="top-img" className="top-img"
-                  onClick={() => toDetailedGallery(galleryContents[index].id)}
+                  <img
+                    src={content.imgSrc}
+                    alt="top-img"
+                    className="top-img"
+                    onClick={() => toDetailedGallery(content.id)}
                   />
                   <div className="template">
                     <h2>{content.title}</h2>
@@ -207,7 +261,12 @@ const updateSavedDesign = async (id, time = 0, isCompleted = false) => {
                   </div>
                   <div className="mark">
                     <div className="mark-content">
-                      <img src={Star} alt="star" className="star-img" />
+                      <img
+                        src={content.starClicked ? StarFilled : Star}
+                        alt="star"
+                        className="star-img"
+                        onClick={() => clickStar(index)} // Add index to toggle star for the clicked item
+                      />
                       <span>{content.likes}</span>
                       <img
                         src={content.bookmarks ? BookmarkFilled : Bookmark}
