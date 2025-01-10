@@ -22,7 +22,7 @@ const initialGalleryContents = [
     likes: 150,
     bookmarks: true,
     imgSrc: Example,
-    starClicked: false, // Add individual starClicked state for each content
+    starClicked: true,
   },
 ];
 
@@ -57,8 +57,9 @@ const Gallery = () => {
           bookmarks: item.isBooked,
           likes: item.recommendation,
           imgSrc: item.imgUrl || Example, // 기본 이미지 설정
-          starClicked: false, 
+          starClicked:  item.myRecommend, 
         }));
+
 
         // 데이터가 정상적으로 로드된 경우
         if (formattedData.length > 0) {
@@ -109,6 +110,7 @@ const Gallery = () => {
 
   // 북마크 취소
   const cancelBookmark = async (id) => {
+    console.log(id);
     try {
       const response = await axios.delete(`${BASE_URL}/designknit/cancel/${parseInt(id)}`, {
         headers: {
@@ -141,11 +143,26 @@ const Gallery = () => {
   };
 
   //상세보기로 이동
-  const toDetailedGallery = (id) => {
-    localStorage.setItem('detailedGalleryID', id);  // 클릭한 id를 저장
+  const toDetailedGallery = (uniqueId) => {
+    // 고유 id에 해당하는 항목을 galleryContents에서 찾음
+    const galleryItem = galleryContents.find(item => item.id === uniqueId);
+    
+    if (galleryItem) {
+      // 해당 항목을 찾았다면, 데이터를 로컬 스토리지에 저장
+      localStorage.setItem('starClicked', galleryItem.starClicked);
+      localStorage.setItem('detailedGalleryID', uniqueId);  // 고유 id를 저장
+      localStorage.setItem('likes', galleryItem.likes.toString());  // 고유 id에 해당하는 likes 값을 저장
+      
+      console.log(galleryItem);
+      console.log(galleryItem.likes.toString());
+    } else {
+      console.log('해당 id를 가진 항목을 찾을 수 없습니다.');
+    }
+  
     navigate('/gallery/detailedgallery');
   };
-
+  
+  //무한 스크롤
   const handleReachEnd = () => {
     // 이전 페이지가 로드된 경우에만 다음 페이지를 불러옴
     if (isPageDataLoaded) {
@@ -153,12 +170,10 @@ const Gallery = () => {
     }
   };
   
+  //추천하기
   const clickStar = async (index) => {
     const updatedContents = [...galleryContents];
     const currentContent = updatedContents[index];
-  
-    // 클릭 상태를 반전시킴
-    currentContent.starClicked = !currentContent.starClicked;
   
     // 만약 클릭 상태가 false일 때만 추천 API를 호출
     if (!currentContent.starClicked) {
@@ -166,7 +181,7 @@ const Gallery = () => {
         // FormData 객체 생성
         const formData = new FormData();
         formData.append('recordId', currentContent.id);  // recordId를 FormData에 추가
-  
+
         const response = await axios.post(`${BASE_URL}/record/recommend`, formData, {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
@@ -178,6 +193,8 @@ const Gallery = () => {
           console.log('Star recommendation sent successfully');
           // 추천 수를 증가시킴
           currentContent.likes += 1; // 추천 수를 증가시킨다
+              // 클릭 상태를 반전시킴
+          currentContent.starClicked = true;
         } else {
           console.error('Failed to send recommendation');
         }

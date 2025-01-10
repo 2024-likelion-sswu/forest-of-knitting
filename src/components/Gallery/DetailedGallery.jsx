@@ -20,16 +20,30 @@ const DetailedGallery = () => {
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const jwtToken = localStorage.getItem('jwtToken');
   const recordId = localStorage.getItem('detailedGalleryID');
+  const [likes,setLikes]= useState(localStorage.getItem('likes'));
+  const [likeClicked, setLikeClicked] = useState(true);
+
+  //local에서 like눌렸는지 가져오기
+  useEffect(() => {
+    const starClicked = localStorage.getItem('starClicked');
+    if (starClicked === 'true') {
+      setLikeClicked(true);
+    } else {
+      setLikeClicked(false);
+    }
+  }, []);
+  
+
   const [galleryContent, setGalleryContent] = useState({
     title: '마루킁킁뜨개했삼',
     time: '6시간 18분',
     preference: 4,
-    likes: 150,
     bookmarks: true,
     imgSrc: [Example, Example02], 
     owner: '뜨개구리를만들고싶은소녀',
   });
 
+  console.log(likeClicked);
   //get 상세 record
   const getDetailGallery = async () => {
     try {
@@ -49,7 +63,6 @@ const DetailedGallery = () => {
             responseContent.knitRecord.time % 60
           }분`,
           preference: responseContent.knitRecord.level,
-          likes: responseContent.knitRecord.recommendation,
           bookmarks: responseContent.isBooked,
           imgSrc: [responseContent.knitImgUrl, responseContent.designImgUrl],
           owner: responseContent.knitRecord.user.nickname,
@@ -64,14 +77,116 @@ const DetailedGallery = () => {
     getDetailGallery ();
   }, []);
 
-  // 북마크 상태를 토글하는 함수
-  const toggleBookmark = () => {
-    setGalleryContent((prevContent) => ({
-      ...prevContent,
-      bookmarks: !prevContent.bookmarks,
-    }));
+  // 저장된 디자인 업데이트
+  const updateSavedDesign = async (id, time = 0, isCompleted = false) => {
+    try {
+      const formData = new FormData();
+      formData.append('knitRecordId', id?.toString() || '');
+      formData.append('hour', Math.floor(time / 60)?.toString() || '');
+      formData.append('minute', (time % 60)?.toString() || '');
+      formData.append('isCompleted', isCompleted ? 'true' : 'false');
+
+      const response = await fetch(`${BASE_URL}/designknit/update`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${jwtToken}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        console.error('Failed to update saved design');
+      } else {
+        console.log('Design updated successfully');
+      }
+    } catch (error) {
+      console.error('Error updating saved design: ', error);
+    }
   };
 
+  // 북마크 취소
+  const cancelBookmark = async (id) => {
+    console.log(id);
+    try {
+      const response = await axios.delete(`${BASE_URL}/designknit/cancel/${parseInt(id)}`, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200) {
+        console.log('Response:', response.data.message);
+      } else {
+        console.error('디자인 취소 실패');
+      }
+    } catch (error) {
+      console.error('디자인 취소 중 에러 발생:', error);
+    }
+  };
+
+  const toggleBookmark = async () => {
+    try {
+      if (galleryContent.bookmarks) {
+        await cancelBookmark(recordId);
+        setGalleryContent((prev) => ({
+          ...prev,
+          bookmarks: false,
+        }));
+      } else {
+        const time = 0;
+        const isCompleted = false;
+        await updateSavedDesign(recordId, time, isCompleted);
+        setGalleryContent((prev) => ({
+          ...prev,
+          bookmarks: true,
+        }));
+      }
+    } catch (error) {
+      console.error("Bookmark toggle error:", error);
+    }
+  };
+
+
+    //추천하기
+    const clickStar = async () => {
+      if (!likeClicked) {
+        try {
+          const formData = new FormData();
+          formData.append('recordId', recordId);
+    
+          const response = await axios.post(`${BASE_URL}/record/recommend`, formData, {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+    
+          if (response.status === 200) {
+            setLikeClicked(true);
+            // 좋아요 수 업데이트
+            setLikes((prevLikes) => Number(prevLikes) + 1);
+            setGalleryContent((prevContent) => ({
+              ...prevContent,
+              likes: Number(prevContent.likes) + 1,
+              starClicked: true,
+            }));
+          } else {
+            console.error('Failed to send recommendation');
+          }
+        } catch (error) {
+          console.error('Error sending recommendation:', error);
+        }
+      } else {
+        console.log('이미 추천되었습니다.');
+      }
+    };
+    
+    
+    useEffect(() => {
+      console.log('likeClicked state changed:', likeClicked);
+    }, [likeClicked]);
+    
   return (
     <div className="DetailedGallery-wrap container">
       <Header />
@@ -104,8 +219,8 @@ const DetailedGallery = () => {
             </div>
             <div className="mark">
               <div className="mark-content">
-                <img src={Star} alt="star" className="star-img" />
-                <h4>{galleryContent.likes}</h4>
+                <img src={likeClicked? StarFilled : Star} alt="star" className="star-img" onClick={clickStar} />
+                <h4>{likes}</h4>
               </div>
               <img
                 src={galleryContent.bookmarks ? BookmarkFilled : Bookmark}
