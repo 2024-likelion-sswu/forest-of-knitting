@@ -29,7 +29,7 @@ const Main = () => {
                 },
             })
             .then((response) => {
-    
+                localStorage.setItem('nickName',response.data.data.nickname);
                 setUserData(response.data.data);
                 fecthTime();
             })

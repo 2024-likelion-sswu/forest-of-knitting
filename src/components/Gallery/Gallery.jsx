@@ -33,10 +33,12 @@ const Gallery = () => {
   const [galleryContents, setGalleryContents] = useState([]);
   const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 상태
   const [isPageDataLoaded, setIsPageDataLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); 
   
 
   // record 전체글 조회
   const fetchGallery = async () => {
+    setIsLoading(true);  
     try {
       const response = await fetch(`${BASE_URL}/record/all?page=${currentPage}`, {
         method: 'GET',
@@ -65,6 +67,7 @@ const Gallery = () => {
         if (formattedData.length > 0) {
           setGalleryContents((prevContents) => [...prevContents, ...formattedData]);
           setIsPageDataLoaded(true); // 데이터가 로드됨
+          setIsLoading(false); 
         } else {
           setIsPageDataLoaded(false); // 데이터가 없으면 로드 실패
         }
@@ -209,97 +212,103 @@ const Gallery = () => {
   
   return (
     <div className="gallery_wrap container">
-      <Header />
-      <Nav name={'Gallery'} />
-      {galleryContents.length > 0 && galleryContents[0].imgSrc && (
-      <section className="today-design">
-        <h1>오늘의 도안</h1>
-        <div className="content">
-          <img src={galleryContents[0].imgSrc} alt="top-img" className="top-img" />
-          <div className="template">
-            <h2>{galleryContents[0].title}</h2>
-            <h3>걸린 시간 <span>{galleryContents[0].time}</span></h3>
-          </div>
-          <div className="mark">
-            <div className="mark-content">
-              <img
-                src={galleryContents[0].starClicked ? StarFilled : Star}
-                alt="star"
-                className="star-img"
-                onClick={() => clickStar(0)} // Add index to toggle star for the clicked item
-              />
-              <span>{galleryContents[0].likes}</span>
-              <img
-                src={galleryContents[0].bookmarks ? BookmarkFilled : Bookmark}
-                alt="bookmark"
-                className="bookmark-img"
-                onClick={() => toggleBookmark(0)} // 클릭 시 북마크 상태 토글
-              />
-            </div>
-            <div className="details">
-              <span onClick={() => toDetailedGallery(galleryContents[0].id)}>자세히보기</span>
-              <img src={RightArrow} alt="right-arrow" />
-            </div>
-          </div>
-        </div>
-      </section>
-      )}
-      <section className="design-gallery">
-        <div className="gal-bk"><img src={Bk} alt="bk" /></div>
-        <h1>도안 갤러리</h1>
-        <div className="gal-container">
-          <Swiper
-            direction={'vertical'}
-            spaceBetween={10}
-            slidesPerView={3.5}
-            onReachEnd={handleReachEnd} // 마지막 슬라이드 도달 시 페이지 증가
-          >
-            {galleryContents.map((content, index) => (
-              <SwiperSlide key={index}>
-                <div className="content">
+    {isLoading ? (
+      <h1 className='gallery-loading'>로딩중</h1>  // 로딩 중일 때 표시
+    ) : (
+      <div className='gallery-running'>
+        <Header />
+        <Nav name={'Gallery'} />
+        {galleryContents.length > 0 && galleryContents[0].imgSrc && (
+          <section className="today-design">
+            <h1>오늘의 도안</h1>
+            <div className="content">
+              <img src={galleryContents[0].imgSrc} alt="top-img" className="top-img" />
+              <div className="template">
+                <h2>{galleryContents[0].title}</h2>
+                <h3>걸린 시간 <span>{galleryContents[0].time}</span></h3>
+              </div>
+              <div className="mark">
+                <div className="mark-content">
                   <img
-                    src={content.imgSrc}
-                    alt="top-img"
-                    className="top-img"
-                    onClick={() => toDetailedGallery(content.id)}
+                    src={galleryContents[0].starClicked ? StarFilled : Star}
+                    alt="star"
+                    className="star-img"
+                    onClick={() => clickStar(0)}
                   />
-                  <div className="template">
-                    <h2>{content.title}</h2>
-                    <h3>걸린 시간 <span>{content.time}</span></h3>
-                    <div className="stars">
-                      {[...Array(5)].map((_, i) => (
-                        <img
-                          key={i}
-                          src={i < content.preference ? StarFilled : Star}
-                          alt="star"
-                        />
-                      ))}
-                    </div>
-                  </div>
-                  <div className="mark">
-                    <div className="mark-content">
-                      <img
-                        src={content.starClicked ? StarFilled : Star}
-                        alt="star"
-                        className="star-img"
-                        onClick={() => clickStar(index)} // Add index to toggle star for the clicked item
-                      />
-                      <span>{content.likes}</span>
-                      <img
-                        src={content.bookmarks ? BookmarkFilled : Bookmark}
-                        alt="bookmark"
-                        className="bookmark-img"
-                        onClick={() => toggleBookmark(index)} // 클릭 시 북마크 상태 토글
-                      />
-                    </div>
-                  </div>
+                  <span>{galleryContents[0].likes}</span>
+                  <img
+                    src={galleryContents[0].bookmarks ? BookmarkFilled : Bookmark}
+                    alt="bookmark"
+                    className="bookmark-img"
+                    onClick={() => toggleBookmark(0)}
+                  />
                 </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-      </section>
-    </div>
+                <div className="details">
+                  <span onClick={() => toDetailedGallery(galleryContents[0].id)}>자세히보기</span>
+                  <img src={RightArrow} alt="right-arrow" />
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+        <section className="design-gallery">
+          <div className="gal-bk"><img src={Bk} alt="bk" /></div>
+          <h1>도안 갤러리</h1>
+          <div className="gal-container">
+            <Swiper
+              direction={'vertical'}
+              spaceBetween={10}
+              slidesPerView={3.5}
+              onReachEnd={handleReachEnd}
+            >
+              {galleryContents.map((content, index) => (
+                <SwiperSlide key={index}>
+                  <div className="content">
+                    <img
+                      src={content.imgSrc}
+                      alt="top-img"
+                      className="top-img"
+                      onClick={() => toDetailedGallery(content.id)}
+                    />
+                    <div className="template">
+                      <h2>{content.title}</h2>
+                      <h3>걸린 시간 <span>{content.time}</span></h3>
+                      <div className="stars">
+                        {[...Array(5)].map((_, i) => (
+                          <img
+                            key={i}
+                            src={i < content.preference ? StarFilled : Star}
+                            alt="star"
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    <div className="mark">
+                      <div className="mark-content">
+                        <img
+                          src={content.starClicked ? StarFilled : Star}
+                          alt="star"
+                          className="star-img"
+                          onClick={() => clickStar(index)}
+                        />
+                        <span>{content.likes}</span>
+                        <img
+                          src={content.bookmarks ? BookmarkFilled : Bookmark}
+                          alt="bookmark"
+                          className="bookmark-img"
+                          onClick={() => toggleBookmark(index)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </section>
+      </div>
+    )}
+  </div>
   );
 };
 

@@ -59,7 +59,7 @@ const Header = () => {
                             variants={menuVariants}
                         >
                             <ul>
-                                <li>뜨개하는 소녀님</li>
+                                <li>{localStorage.getItem('nickName') || "방문자"}님</li>
                                 <li className="logout" onClick={handleLogout}>
                                     로그아웃
                                 </li>
