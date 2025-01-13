@@ -6,11 +6,8 @@ import Checked from '../../assets/img/KnitTime/checked.svg';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/scrollbar';
-// Import required modules
 import { Scrollbar } from 'swiper/modules';
 
 const SlideContent = ({ image, time, knitRecordId, isCompleted }) => {
