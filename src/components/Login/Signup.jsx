@@ -13,10 +13,10 @@ const Signup = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [isPasswordMatch, setIsPasswordMatch] = useState(true);
     const [activeModal, setActiveModal] = useState(false);
-    const [isDuplicate, setIsDuplicate] = useState(null); 
+    const [isDuplicate, setIsDuplicate] = useState(null);
     const navigate = useNavigate();
 
-    const back = () =>{
+    const back = () => {
         navigate(-1);
     }
     const handleNicknameChange = (e) => {
@@ -36,7 +36,7 @@ const Signup = () => {
     };
 
     const gotoMain = () => {
-        if (isPasswordMatch && nickname && password && userId ) {
+        if (isPasswordMatch && nickname && password && userId) {
             axios
                 .post('https://sutest.store/user/signup', {
                     userId: userId,
@@ -63,13 +63,14 @@ const Signup = () => {
                 params: { userId },
             })
             .then((response) => {
-                if (response.status === 200 ) {
+                if (response.status === 200) {
                     setIsDuplicate(false);
-                } else if (response.status === 409) {
-                    setIsDuplicate(true);
-                }
+                } 
             })
             .catch((error) => {
+                if (error.status === 409) {
+                    setIsDuplicate(true);
+                }
                 console.error('중복 확인 실패:', error.response || error.message);
             });
     };
