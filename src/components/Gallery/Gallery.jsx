@@ -33,12 +33,10 @@ const Gallery = () => {
   const [galleryContents, setGalleryContents] = useState([]);
   const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 상태
   const [isPageDataLoaded, setIsPageDataLoaded] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); 
   
 
   // record 전체글 조회
-  const fetchGallery = async () => {
-    setIsLoading(true);  
+  const fetchGallery = async () => { 
     try {
       const response = await fetch(`${BASE_URL}/record/all?page=${currentPage}`, {
         method: 'GET',
@@ -67,7 +65,6 @@ const Gallery = () => {
         if (formattedData.length > 0) {
           setGalleryContents((prevContents) => [...prevContents, ...formattedData]);
           setIsPageDataLoaded(true); // 데이터가 로드됨
-          setIsLoading(false); 
         } else {
           setIsPageDataLoaded(false); // 데이터가 없으면 로드 실패
         }
@@ -212,10 +209,6 @@ const Gallery = () => {
   
   return (
     <div className="gallery_wrap container">
-    {isLoading ? (
-      <h1 className='gallery-loading'>로딩중</h1>  // 로딩 중일 때 표시
-    ) : (
-      <div className='gallery-running'>
         <Header />
         <Nav name={'Gallery'} />
         {galleryContents.length > 0 && galleryContents[0].imgSrc && (
@@ -307,8 +300,6 @@ const Gallery = () => {
           </div>
         </section>
       </div>
-    )}
-  </div>
   );
 };
 
